@@ -6,6 +6,18 @@ building up an array of prime numbers
 
 import unittest
 
+def split(n):
+    """Split a number into an array of digits
+
+    Ex: split(1029) = [1, 0, 2, 9]
+    """
+    digits = []
+    while n > 0:
+        digits.insert(0, n % 10)
+        n /= 10
+    return digits
+
+
 def reverse(n):
     """Reverse the digits of a number
 
@@ -13,12 +25,9 @@ def reverse(n):
     ex: reverse(167) = 761
     reverse(190) = 91
     """
-    new = 0
-    while n > 0:
-        new *= 10
-        new += n % 10
-        n /= 10
-    return new
+    split_array = split(n)
+    rev_array = split_array[::-1]
+    return reduce(lambda x,y: x * 10 + y, rev_array)
 
 
 def palindrome(n):
@@ -32,6 +41,9 @@ def palindrome(n):
 
 
 class TestStringMethods(unittest.TestCase):
+
+    def test_split(self):
+        self.assertEqual(split(109), [1, 0, 9])
 
     def test_reverse(self):
         self.assertEqual(reverse(601), 106)
