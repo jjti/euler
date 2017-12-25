@@ -1,4 +1,4 @@
-from utils import *
+import utils
 
 """
 The first known prime found to exceed one million digits was discovered in 1999, and is a Mersenne prime of the form;
@@ -13,6 +13,6 @@ t = 1 # total
 # for _ in range(0, 7830457):
 for _ in range(0, 7830457):
     t *= 2
-    t = join(split(t)[-10:])  # last ten digits
+    t = utils.join(utils.split(t)[-10:])  # last ten digits
 
-print join(split(t * 28433 + 1)[-10:])
+print utils.join(utils.split(t * 28433 + 1)[-10:])

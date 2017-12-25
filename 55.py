@@ -1,4 +1,4 @@
-from utils import *
+import utils
 import sys
 
 """
@@ -47,8 +47,8 @@ for n in range(1, 10000):
     rev_add_count = 0 # how many times has it been reversed and added to self
     attempted = [m]
     while rev_add_count < 50:
-        m += reverse(m)
-        if palindrome(m):
+        m += utils.reverse(m)
+        if utils.palindrome(m):
             # update cache for each to True
             for a in attempted:
                 CACHE[a] = True
