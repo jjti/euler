@@ -32,8 +32,7 @@ def reverse(n):
     reverse(190) = 91
     """
     split_array = split(n)
-    rev_array = split_array[::-1]
-    return reduce(lambda x,y: x * 10 + y, rev_array)
+    return join(split_array[::-1])
 
 
 def palindrome(n):
