@@ -17,6 +17,12 @@ def split(n):
         n /= 10
     return digits
 
+def join(n):
+    """Join the array of digits in n into a single number
+
+    Ex: join([3, 1, 5, 4]) = 3154
+    """
+    return reduce(lambda x, y: x * 10 + y, n)
 
 def reverse(n):
     """Reverse the digits of a number
@@ -44,6 +50,9 @@ class TestStringMethods(unittest.TestCase):
 
     def test_split(self):
         self.assertEqual(split(109), [1, 0, 9])
+
+    def test_join(self):
+        self.assertEqual(join([1, 0, 9]), 109)
 
     def test_reverse(self):
         self.assertEqual(reverse(601), 106)
