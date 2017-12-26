@@ -4,7 +4,9 @@ Some functions are frequently needed like reversing a number or
 building up an array of prime numbers
 """
 
+import math
 import unittest
+
 
 def split(n):
     """Split a number into an array of digits
@@ -44,6 +46,16 @@ def palindrome(n):
     """
     return n == reverse(n)
 
+def choose(n, r):
+    """What's N choose R?
+    equation is n!/r!(n-r)!
+
+    ex: choose(5, 2) = 10
+    choose(5, 1) = 5
+    """
+    dem = math.factorial(r) * math.factorial(n - r)
+    return math.factorial(n) / dem
+
 
 class TestStringMethods(unittest.TestCase):
 
@@ -59,9 +71,11 @@ class TestStringMethods(unittest.TestCase):
     
     def test_palindrome(self):
         self.assertEqual(palindrome(601), False)
-        self.assertEqual(palindrome(101), True)
         self.assertEqual(palindrome(717), True)
         self.assertEqual(palindrome(1010), False)
+
+    def test_factorial(self):
+        self.assertEqual(choose(5,2), 10)
 
 
 if __name__ == '__main__':
