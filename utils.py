@@ -46,6 +46,7 @@ def palindrome(n):
     """
     return n == reverse(n)
 
+
 def choose(n, r):
     """What's N choose R?
     equation is n!/r!(n-r)!
@@ -56,6 +57,41 @@ def choose(n, r):
     dem = math.factorial(r) * math.factorial(n - r)
     return math.factorial(n) / dem
 
+
+def prime_sieve(l):
+    """Generate a prime number hash up the the limit, l
+    """
+    PRIMES = {}
+    for i in range(2, l):
+        if i not in PRIMES:
+            PRIMES[i] = True
+            j = i * 2
+            while j < l:
+                PRIMES[j] = False
+                j += i
+    return PRIMES
+
+
+def prime_check(n):
+    """Check whether the tested number, n, is a prime number
+    """
+    for i in range(2, int(math.ceil(math.sqrt(n)))):
+        if n % i == 0:
+            return False
+    return True
+
+
+def permute(arr):
+    """Generate permutations of the array of remaining numbers
+
+    where arr is a list of numbers not included in the existing combinations
+    """
+    acc = [[]]
+    while len(arr) is not 0:
+        n = arr.pop()  # number to add to every spot in the lists
+        acc = [r[0:i] + [n] + r[i:]
+               for r in acc for i in range(0, len(r)+1)]
+    return acc
 
 class TestStringMethods(unittest.TestCase):
 
@@ -76,6 +112,9 @@ class TestStringMethods(unittest.TestCase):
 
     def test_factorial(self):
         self.assertEqual(choose(5,2), 10)
+
+    def test_gen_primes(self):
+        self.assertEqual(prime_sieve(5), [False, False, False, False, True])
 
 
 if __name__ == '__main__':
