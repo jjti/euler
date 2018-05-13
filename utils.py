@@ -19,12 +19,14 @@ def split(n):
         n /= 10
     return digits
 
+
 def join(n):
     """Join the array of digits in n into a single number
 
     Ex: join([3, 1, 5, 4]) = 3154
     """
     return reduce(lambda x, y: x * 10 + y, n)
+
 
 def reverse(n):
     """Reverse the digits of a number
@@ -89,12 +91,11 @@ def permute(arr):
     acc = [[]]
     while len(arr) is not 0:
         n = arr.pop()  # number to add to every spot in the lists
-        acc = [r[0:i] + [n] + r[i:]
-               for r in acc for i in range(0, len(r)+1)]
+        acc = [r[0:i] + [n] + r[i:] for r in acc for i in range(0, len(r) + 1)]
     return acc
 
-class TestStringMethods(unittest.TestCase):
 
+class TestStringMethods(unittest.TestCase):
     def test_split(self):
         self.assertEqual(split(109), [1, 0, 9])
 
@@ -104,17 +105,17 @@ class TestStringMethods(unittest.TestCase):
     def test_reverse(self):
         self.assertEqual(reverse(601), 106)
         self.assertEqual(reverse(910), 19)
-    
+
     def test_palindrome(self):
         self.assertEqual(palindrome(601), False)
         self.assertEqual(palindrome(717), True)
         self.assertEqual(palindrome(1010), False)
 
     def test_factorial(self):
-        self.assertEqual(choose(5,2), 10)
+        self.assertEqual(choose(5, 2), 10)
 
     def test_gen_primes(self):
-        self.assertEqual(prime_sieve(5), [False, False, False, False, True])
+        self.assertEqual(prime_sieve(5), {2: True, 3: True, 4: False})
 
 
 if __name__ == '__main__':
