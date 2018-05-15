@@ -1,3 +1,4 @@
+import string
 """
 Each character on a computer is assigned a unique code and the preferred standard is ASCII (American Standard Code for Information Interchange).
 For example, uppercase A = 65, asterisk (*) = 42, and lowercase k = 107.
@@ -17,3 +18,47 @@ Your task has been made easy, as the encryption key consists of three lower case
 Using cipher.txt (right click and 'Save Link/Target As...'), a file containing the encrypted ASCII codes,
 and the knowledge that the plain text must contain common English words, decrypt the message and find the sum of the ASCII values in the original text.
 """
+punc = set(string.punctuation)
+
+
+def keyGen():
+    """the possible keys are aaa thru zzz
+    this is a generator for making each sequentially
+    ascii for lowercase letters is 97 to 123
+    """
+    keys = []
+    for a in range(97, 123):
+        for b in range(97, 123):
+            for c in range(97, 123):
+                keys.append([a, b, c])
+    return keys
+
+
+englishWords = set()
+with open("59.english.words.txt") as wordsFile:
+    for word in wordsFile.readlines():
+        englishWords.add(word.strip())
+
+with open("59.input.txt") as encryption:
+    """keep the results with the greatest number of words
+    """
+    maxCount = 0
+    bestResult = ""
+    bestByteScore = 0
+
+    encryptedChars = [int(k) for k in encryption.read().split(",")]
+    for keys in keyGen():
+        decryptedChars = []
+        for i, char in enumerate(encryptedChars):
+            decryptedChars.append(char ^ keys[i % 3])  # XOR with key
+        decryptedText = [chr(c) for c in decryptedChars]
+        decryptedText = [c for c in decryptedText if c not in punc]
+        # join chars and separate into words
+        decryptedWords = "".join(decryptedText).split(" ")
+        wordCount = sum(1 if word.lower() in englishWords else 0
+                        for word in decryptedWords)
+        if wordCount > maxCount:
+            maxCount, bestResult = wordCount, decryptedWords
+            bestByteScore = sum(decryptedChars)
+
+    print(maxCount, bestByteScore, bestResult)

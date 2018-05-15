@@ -62,6 +62,7 @@ def choose(n, r):
 
 def prime_sieve(l):
     """Generate a prime number hash up the the limit, l
+    1 is not a prime
     """
     PRIMES = {}
     for i in range(2, l):

@@ -18,7 +18,7 @@ In the first one-thousand expansions, how many fractions contain a numerator wit
 """
 
 
-class SquareOfTwoGenerator:
+def SquareOfTwoGenerator(limit=1000):
     """
     numerators = 3, 7, 17, 41, 99
     denominators = 2, 5, 12, 29, 70
@@ -26,30 +26,14 @@ class SquareOfTwoGenerator:
     the next numerator is the current numerator + 2 times the last denominator
     the next denominator is the sum of the current numerator and denominator
     """
-
-    def __init__(self, n=1000):
-        """set the max iter value"""
-        self.max = n
-
-    def __iter__(self):
-        """set the index to 0
-        initialize the numerator and denominator for the first iteration"""
-        self.num = 3
-        self.den = 2
-        self.index = 0
-        self.count = 0
-        return self
-
-    def next(self):
+    index, num, den = 0, 3, 2
+    while index < limit:
         """set the next numerator and denominator
         return whether the numerator has more digits than the denominator (see above)"""
-        if self.index < self.max:
-            hit = len(utils.split(self.num)) > len(utils.split(self.den))
-            self.num, self.den = self.num + 2 * self.den, self.num + self.den
-            self.index += 1  # increment
-            return hit
-        else:
-            raise StopIteration
+        hit = len(utils.split(num)) > len(utils.split(den))
+        num, den = num + 2 * den, num + den
+        index += 1
+        yield hit
 
 
 # now run thru the iterator and accumulate all the hits
