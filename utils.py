@@ -63,15 +63,38 @@ def choose(n, r):
 def prime_sieve(l):
     """Generate a prime number hash up the the limit, l
     1 is not a prime
+
+    based on the sieve of atkin and an example script at:
+    https://www.geeksforgeeks.org/sieve-of-atkin/
     """
-    PRIMES = {}
-    for i in range(2, l):
-        if i not in PRIMES:
-            PRIMES[i] = True
-            j = i * 2
-            while j < l:
-                PRIMES[j] = False
-                j += i
+    # step 1 and 2
+    # start of with an all non-prime dictionary
+    PRIMES = dict.fromkeys(range(0, l), False)
+    for p in [2, 3, 5]:
+        PRIMES[p] = True
+
+    # step 3
+    lSqr = int(math.floor(math.pow(l, 0.5)))
+    for x in range(1, lSqr):
+        for y in range(1, lSqr):
+            # step 3.1
+            n = (4 * x * x) + (y * y)
+            if (n <= l and (n % 12 == 1 or n % 12 == 5)):
+                PRIMES[n] = True
+            # step 3.2
+            n = (3 * x * x) + (y * y)
+            if (n <= l and n % 12 == 7):
+                PRIMES[n] = True
+            # step 3.3
+            n = (3 * x * x) - (y * y)
+            if (x > y and n <= l and n % 12 == 11):
+                PRIMES[n] = True
+
+    # step 4
+    for x in range(5, lSqr):
+        if PRIMES[x]:
+            for y in range(x * x, l, x * x):
+                PRIMES[n] = False
     return PRIMES
 
 
@@ -116,7 +139,19 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(choose(5, 2), 10)
 
     def test_gen_primes(self):
-        self.assertEqual(prime_sieve(5), {2: True, 3: True, 4: False})
+        self.assertEqual(
+            prime_sieve(10), {
+                0: False,
+                1: False,
+                2: True,
+                3: True,
+                4: False,
+                5: True,
+                6: False,
+                7: True,
+                8: False,
+                9: False
+            })
 
 
 if __name__ == '__main__':

@@ -36,30 +36,29 @@ If this does not exist, insert the digit with an unknown position into the list 
 code = []
 
 
-def sorted_positions(combo):
-    """make a list of the character positions in growing password"""
+def insert_and_arrange(combo):
+    """insert new digits, mutate/sort the code with ordering from combo"""
     pos = []
     for c in combo:
         if c in code:
             pos.append(code.index(c))
         else:
-            pos.append(len(code))  # insert
+            pos.append(len(code))  # insert at end
             code.append(c)
-    pos = sorted(pos)
+    pos = sorted(pos)  # what the actual ordering should be
     for p, c in zip(pos, combo):
         code[p] = c
 
 
 with open('79.input.txt') as f:
-    # cut into a list of 3 letter lists
+    """cut the password attempts into a list of 3 number lists"""
     allDigits = []
     for line in f:
         allDigits.append(split(int(line)))
 
-    # get the total number count of final password
     for combo in allDigits:
-        # get indexes for each digit
-        sorted_positions(combo)
+        # insert new digits and rearrange based on order
+        insert_and_arrange(combo)
 
 #answer is 73162890
-print("".join([str(c) for c in code]))
+print("answer is " + "".join([str(c) for c in code]))

@@ -1,6 +1,8 @@
 import utils
+import time
 """
 Starting with 1 and spiralling anticlockwise in the following way, a square spiral with side length 7 is formed.
+
 65 64 63 62 61 60 59 58 57
 66 37 36 35 34 33 32 31 56
 67 38 17 16 15 14 13 30 55
@@ -9,6 +11,7 @@ Starting with 1 and spiralling anticlockwise in the following way, a square spir
 70 41 20  7  8  9 10 27 52
 71 42 21 22 23 24 25 26 51
 72 43 44 45 46 47 48 49 50
+73 74 75 76 77 78 79 80 81
 
 1 3 13 31 57
 1 5 17 37 65
@@ -36,27 +39,19 @@ index
 (layerIndex + 1) * 4
 """
 
-limit = 1000000
-primeSieve = utils.prime_sieve(limit)
+start = time.time()
 
-print("made sieve length: " + str(limit))
-
-spiralIndex = 1  # init at zeroeth spiral
+spiralIndex, bottomRightCorner, sideLength = 1, 0, 1  # init at zeroeth spiral
 primePerc, primeCount, totalCount = 1.0, 0.0, 1.0  # counting middle 1 as first, need float for division
-while primePerc >= 0.1:
+while primePerc >= 0.10:
     sideLength = spiralIndex * 2  # number of digits along one side
     bottomRightCorner = (spiralIndex * 2 + 1)**2
-    if bottomRightCorner > limit:
-        raise RuntimeError(bottomRightCorner, primePerc)
 
-    thisPrimeCount = 0
     for x in [bottomRightCorner - i * sideLength for i in range(1, 4)]:
         # check whether they're prime or not using the sieve
-        if primeSieve[x]:
+        if utils.prime_check(x):
             primeCount += 1
-            thisPrimeCount += 1
 
-    print(spiralIndex, thisPrimeCount)
     # find new ratio, will end if < 10%
     totalCount += 4
     primePerc = primeCount / totalCount
@@ -64,4 +59,4 @@ while primePerc >= 0.1:
     # set the new "last corner"
     spiralIndex += 1
 
-print(primePerc, sideLength + 1)
+print(primePerc, spiralIndex * 2 - 1, bottomRightCorner)
