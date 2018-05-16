@@ -1,5 +1,4 @@
 import utils
-
 """
 Pandigital multiples
 Problem 38
@@ -22,7 +21,6 @@ which is the concatenated product of 9 and (1,2,3,4,5).
 
 What is the largest 1 to 9 pandigital 9-digit number that can be formed as the concatenated product of an integer with (1,2, ... , n) where n > 1?
 """
-
 """Steps for brute force
 
 every number needs to be tested until an array of digits has been built up that's pandigital []bool
@@ -33,18 +31,26 @@ has to be greater than 918273645
 
 """
 
-def pandigital_check(arr):
-    """Is this an array of digits pandigital?
-    """
-    if len(arr) !== 9:
-        return False
-    digits = {}
-    for n in arr:
-        if n in digits:
-            return False
-        digits[n] = True
-    return True
+
+def testableInts():
+    """generator for all the probable integers. must start with 9"""
+    yield 9
+    for n in range(91, 99):
+        yield n
+    for n in range(912, 988):
+        yield n
+    for n in range(9123, 9877):
+        yield n
+    for n in range(91234, 98766):
+        yield n
 
 
-for i in range(987654321, 918273645):
-
+maxNum = 0
+for x in testableInts():
+    num, i = [], 1
+    while len(num) < 9:
+        num = num + utils.split(x * i)
+        i += 1
+    if utils.isPandigital(num):
+        maxNum = max([utils.join(num), maxNum])
+print(maxNum)

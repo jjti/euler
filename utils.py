@@ -119,6 +119,12 @@ def permute(arr):
     return acc
 
 
+def isPandigital(digits):
+    """should make all the same digits as a range of 1 to 9"""
+    return len(digits) is 9 and len(set(range(1, 10)).difference(
+        set(digits))) is 0
+
+
 class TestStringMethods(unittest.TestCase):
     def test_split(self):
         self.assertEqual(split(109), [1, 0, 9])
@@ -152,6 +158,11 @@ class TestStringMethods(unittest.TestCase):
                 8: False,
                 9: False
             })
+
+    def test_isPandigital(self):
+        self.assertEqual(isPandigital([1, 2, 3, 4, 6, 5, 8, 7, 9]), True)
+        self.assertEqual(isPandigital([1, 2, 3, 4, 6, 5, 8, 9]), False)
+        self.assertEqual(isPandigital([1, 2, 3, 4, 6, 5, 8, 8, 9]), False)
 
 
 if __name__ == '__main__':
