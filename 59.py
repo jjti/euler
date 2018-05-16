@@ -18,12 +18,16 @@ Your task has been made easy, as the encryption key consists of three lower case
 Using cipher.txt (right click and 'Save Link/Target As...'), a file containing the encrypted ASCII codes,
 and the knowledge that the plain text must contain common English words, decrypt the message and find the sum of the ASCII values in the original text.
 """
-punc = set(string.punctuation)
+PUNC = set(string.punctuation)  # punction characters
+
+ENGLISH_WORDS = set()
+with open("59.english.words.txt") as wordsFile:
+    for word in wordsFile.readlines():
+        ENGLISH_WORDS.add(word.strip())
 
 
 def keyGen():
     """the possible keys are aaa thru zzz
-    this is a generator for making each sequentially
     ascii for lowercase letters is 97 to 123
     """
     keys = []
@@ -34,29 +38,23 @@ def keyGen():
     return keys
 
 
-englishWords = set()
-with open("59.english.words.txt") as wordsFile:
-    for word in wordsFile.readlines():
-        englishWords.add(word.strip())
-
 with open("59.input.txt") as encryption:
     """keep the results with the greatest number of words
     """
-    maxCount = 0
-    bestResult = ""
-    bestByteScore = 0
-
+    maxCount, bestResult, bestByteScore = 0, "", 0
     encryptedChars = [int(k) for k in encryption.read().split(",")]
     for keys in keyGen():
-        decryptedChars = []
-        for i, char in enumerate(encryptedChars):
-            decryptedChars.append(char ^ keys[i % 3])  # XOR with key
-        decryptedText = [chr(c) for c in decryptedChars]
-        decryptedText = [c for c in decryptedText if c not in punc]
+        decryptedChars = [
+            char ^ keys[i % 3] for i, char in enumerate(encryptedChars)
+        ]  # XOR with key
+        decryptedText = [chr(c) for c in decryptedChars if chr(c) not in PUNC]
+
         # join chars and separate into words
         decryptedWords = "".join(decryptedText).split(" ")
-        wordCount = sum(1 if word.lower() in englishWords else 0
+        wordCount = sum(1 if word.lower() in ENGLISH_WORDS else 0
                         for word in decryptedWords)
+
+        # set a new best predicted decryption
         if wordCount > maxCount:
             maxCount, bestResult = wordCount, decryptedWords
             bestByteScore = sum(decryptedChars)

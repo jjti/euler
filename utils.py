@@ -20,12 +20,29 @@ def split(n):
     return digits
 
 
-def join(n):
+def digitSlice(n, sliceCount):
+    """like split except it only returns a range of the numer
+    n {int}                the number to split into an array and subslice
+    sliceCount {int}       the slice of digits to get from the number
+                            corresponds to n[:sliceCount] (if positive) or
+                            n[sliceCount:] (if negative)
+    """
+    if sliceCount < 0:
+        return n % (10**(-sliceCount))
+    numDigits = int(math.log10(n) + 1)
+    return n / (10**(numDigits - sliceCount))
+
+
+def join(n, asString=False):
     """Join the array of digits in n into a single number
 
+    n {[int]} the array of integers to turn into a single number
+    asString {bool} whether to return as string. useful for keeping 0 at front of number
     Ex: join([3, 1, 5, 4]) = 3154
     """
-    return reduce(lambda x, y: x * 10 + y, n)
+    if not asString:
+        return reduce(lambda x, y: x * 10 + y, n)
+    return reduce(lambda x, y: x + y, [str(x) for x in n])
 
 
 def reverse(n):
@@ -116,13 +133,16 @@ def permute(arr):
     while len(arr) is not 0:
         n = arr.pop()  # number to add to every spot in the lists
         acc = [r[0:i] + [n] + r[i:] for r in acc for i in range(0, len(r) + 1)]
-    return acc
+    # don't want to return array of digits that start with 0
+    return [p for p in acc if p[0] != 0]
 
 
-def isPandigital(digits):
-    """should make all the same digits as a range of 1 to 9"""
-    return len(digits) is 9 and len(set(range(1, 10)).difference(
-        set(digits))) is 0
+def isPandigital(digits, size=9):
+    """should include all the digits, 1 to size, inclusive, once"""
+    if len(digits) != size: return False
+    if size < 10:
+        return len(set(range(1, size + 1)).difference(set(digits))) == 0
+    return len(set(range(0, size)).difference(set(digits))) == 0
 
 
 class TestStringMethods(unittest.TestCase):
@@ -163,6 +183,11 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(isPandigital([1, 2, 3, 4, 6, 5, 8, 7, 9]), True)
         self.assertEqual(isPandigital([1, 2, 3, 4, 6, 5, 8, 9]), False)
         self.assertEqual(isPandigital([1, 2, 3, 4, 6, 5, 8, 8, 9]), False)
+        self.assertEqual(isPandigital([1, 3, 2], 3), True)
+
+    def test_splitSlice(self):
+        self.assertEqual(splitSlice(12345, -2), [4, 5])
+        self.assertEqual(splitSlice(12345, 2), [1, 2])
 
 
 if __name__ == '__main__':
