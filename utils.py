@@ -77,42 +77,53 @@ def choose(n, r):
     return math.factorial(n) / dem
 
 
-def prime_sieve(l):
+def prime_sieve(limit, asList=False):
     """Generate a prime number hash up the the limit, l
     1 is not a prime
 
     based on the sieve of atkin and an example script at:
     https://www.geeksforgeeks.org/sieve-of-atkin/
     """
-    # step 1 and 2
-    # start of with an all non-prime dictionary
-    PRIMES = dict.fromkeys(range(0, l), False)
-    for p in [2, 3, 5]:
-        PRIMES[p] = True
+    assert limit > 3
+    sieve_list = [False] * (limit + 1)
+    sieve_list[2:4] = (True, True)
 
-    # step 3
-    lSqr = int(math.floor(math.pow(l, 0.5)))
-    for x in range(1, lSqr):
-        for y in range(1, lSqr):
-            # step 3.1
-            n = (4 * x * x) + (y * y)
-            if (n <= l and (n % 12 == 1 or n % 12 == 5)):
-                PRIMES[n] = True
-            # step 3.2
-            n = (3 * x * x) + (y * y)
-            if (n <= l and n % 12 == 7):
-                PRIMES[n] = True
-            # step 3.3
-            n = (3 * x * x) - (y * y)
-            if (x > y and n <= l and n % 12 == 11):
-                PRIMES[n] = True
+    # Part I: preliminary work
+    x = x_squared = 1
+    while x_squared < limit:
+        y = y_squared = 1
+        while y_squared < limit:
+            n = 4 * x_squared + y_squared
+            if n <= limit and n % 12 in (1, 5):
+                sieve_list[n] = not sieve_list[n]
 
-    # step 4
-    for x in range(5, lSqr):
-        if PRIMES[x]:
-            for y in range(x * x, l, x * x):
-                PRIMES[n] = False
-    return PRIMES
+            n = 3 * x_squared + y_squared
+            if n <= limit and n % 12 == 7:
+                sieve_list[n] = not sieve_list[n]
+
+            if x > y:
+                n = 3 * x_squared - y_squared
+                if n <= limit and n % 12 == 11:
+                    sieve_list[n] = not sieve_list[n]
+            y += 1
+            y_squared = y * y
+        x += 1
+        x_squared = x * x
+
+    # Part II: Remove the squares of primes (and their multiples)
+    r = 5
+    r_squared = r * r
+    while r_squared < limit:
+        if sieve_list[r]:
+            for n in range(r_squared, len(sieve_list), r_squared):
+                sieve_list[n] = False
+        r += 1
+        r_squared = r * r
+
+    # Part III: Append everything into a list
+    if asList:
+        return [x for x, p in enumerate(sieve_list) if p]
+    return dict.fromkeys([x for x, p in enumerate(sieve_list) if p], True)
 
 
 def prime_check(n):
@@ -135,6 +146,25 @@ def permute(arr):
         acc = [r[0:i] + [n] + r[i:] for r in acc for i in range(0, len(r) + 1)]
     # don't want to return array of digits that start with 0
     return [p for p in acc if p[0] != 0]
+
+
+def subSelections(arr):
+    """Create an array of arrays for all possible sub selections
+    add the results to the accumulator list
+
+    eg: [1, 2, 3] = [[1, 2], [1, 3], [2, 3], [1], [2], [3]]
+    """
+    acc = {}
+
+    def subslice(subArr):
+        if len(subArr) < 2: return
+        for i in range(len(subArr)):
+            subSelect = subArr[0:i] + subArr[i + 1:]
+            acc[join(subSelect, True)] = subSelect
+            subslice(subSelect)
+
+    subslice(arr)
+    return acc.values()
 
 
 def isPandigital(digits, size=9):
@@ -165,19 +195,9 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(choose(5, 2), 10)
 
     def test_gen_primes(self):
-        self.assertEqual(
-            prime_sieve(10), {
-                0: False,
-                1: False,
-                2: True,
-                3: True,
-                4: False,
-                5: True,
-                6: False,
-                7: True,
-                8: False,
-                9: False
-            })
+        sieve = prime_sieve(100)
+        for prime in [3, 5, 7, 11, 13, 17]:
+            self.assertTrue(sieve[prime])
 
     def test_isPandigital(self):
         self.assertEqual(isPandigital([1, 2, 3, 4, 6, 5, 8, 7, 9]), True)
@@ -186,8 +206,17 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(isPandigital([1, 3, 2], 3), True)
 
     def test_splitSlice(self):
-        self.assertEqual(splitSlice(12345, -2), [4, 5])
-        self.assertEqual(splitSlice(12345, 2), [1, 2])
+        self.assertEqual(digitSlice(12345, -2), 45)
+        self.assertEqual(digitSlice(12345, 2), 12)
+
+    def test_subselections(self):
+        subselects = subSelections([1, 2, 3])
+        for s in [[1], [2], [3], [1, 2], [1, 3], [2, 3]]:
+            self.assertTrue(s in subselects)
+
+        subselects = subSelections([0, 1, 2, 4])
+        for s in [[0, 1, 2], [0, 1, 4], [1, 2, 4]]:
+            self.assertTrue(s in subselects)
 
 
 if __name__ == '__main__':
