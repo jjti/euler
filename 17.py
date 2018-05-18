@@ -73,10 +73,10 @@ def numberLetterCount(n):
     if n < 100:
         return tens(n)  # never an and
     if n < 1000:
-        return hundreds(n) + tens(n, n % 10 != 0)
-    return thousands(n) + hundreds(n) + tens(n, n % 10 != 0)
+        return hundreds(n) + tens(n, n % 100 != 0)
+    return len("onethousand")
 
 
-totalLetterCount = sum([numberLetterCount(n) for n in range(1, 1001)])
-print([numberLetterCount(n) for n in [342, 115]])
-print(totalLetterCount)  # output: 20888
+assert numberLetterCount(342) == 23
+assert numberLetterCount(115) == 20
+print(sum([numberLetterCount(n) for n in range(1, 1001)]))  # output: 21124
