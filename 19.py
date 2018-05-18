@@ -8,6 +8,7 @@ All the rest have thirty-one,
 Saving February alone,
 Which has twenty-eight, rain or shine.
 And on leap years, twenty-nine.
+
 A leap year occurs on any year evenly divisible by 4, but not on a century unless it is divisible by 400.
 How many Sundays fell on the first of the month during the twentieth century (1 Jan 1901 to 31 Dec 2000)?
 """
@@ -32,8 +33,7 @@ def monthToDayCount(i, year):
             # it's a leap year
             return 29
         return 28
-    else:
-        raise RuntimeError("Invalid month")
+    raise RuntimeError("Invalid month")
 
 
 def sundayCount():
@@ -43,18 +43,17 @@ def sundayCount():
     sundayCount = 0
 
     # Jan 1 1900 was a Monday
-    dayOfWeek = 1  # 0-6, 0 = Sunday
+    dayOfWeek = 0  # 0-6, 0 = Sunday
 
     # run up until 21 century
     for year in range(1900, 2001):
         for month in range(0, 12):
-            for _ in range(0, monthToDayCount(month, year)):
-                dayOfWeek += 1
-                dayOfWeek %= 7
-                if (dayOfWeek == 0 and year > 1900):
+            for day in range(0, monthToDayCount(month, year)):
+                dayOfWeek = (dayOfWeek + 1) % 7
+                if (dayOfWeek == 0 and day == 0 and year > 1900):
                     sundayCount += 1
 
     return sundayCount
 
 
-print(sundayCount())  # output: 5218
+print(sundayCount())  # output: 171
