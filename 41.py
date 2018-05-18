@@ -13,6 +13,6 @@ for i in range(9, 0, -1):
     PERMS = [utils.join(x) for x in utils.permute(range(1, i))]
     PERMS = sorted(PERMS, reverse=True)
     for p in PERMS:
-        if utils.prime_check(p):
+        if utils.is_prime(p):
             print(p)
             raise StopIteration

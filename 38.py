@@ -51,6 +51,6 @@ for x in testableInts():
     while len(num) < 9:
         num = num + utils.split(x * i)
         i += 1
-    if utils.isPandigital(num):
+    if utils.is_pandigital(num):
         maxNum = max([utils.join(num), maxNum])
 print(maxNum)

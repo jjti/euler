@@ -20,7 +20,7 @@ def split(n):
     return digits
 
 
-def digitSlice(n, sliceCount):
+def digit_slice(n, sliceCount):
     """like split except it only returns a range of the numer
     n {int}                the number to split into an array and subslice
     sliceCount {int}       the slice of digits to get from the number
@@ -81,6 +81,8 @@ def prime_sieve(limit, asList=False):
     """Generate a prime number hash up the the limit, l
     1 is not a prime
 
+    asList returns just the list of primes beneath that limit
+
     based on the sieve of atkin and an example script at:
     https://www.geeksforgeeks.org/sieve-of-atkin/
     """
@@ -126,7 +128,7 @@ def prime_sieve(limit, asList=False):
     return dict.fromkeys([x for x, p in enumerate(sieve_list) if p], True)
 
 
-def prime_check(n):
+def is_prime(n):
     """Check whether the tested number, n, is a prime number
     """
     for i in range(2, int(math.ceil(math.sqrt(n)))):
@@ -148,7 +150,7 @@ def permute(arr):
     return [p for p in acc if p[0] != 0]
 
 
-def subSelections(arr):
+def sub_selections(arr):
     """Create an array of arrays for all possible sub selections
     add the results to the accumulator list
 
@@ -167,7 +169,7 @@ def subSelections(arr):
     return acc.values()
 
 
-def isPandigital(digits, size=9):
+def is_pandigital(digits, size=9):
     """should include all the digits, 1 to size, inclusive, once"""
     if len(digits) != size: return False
     if size < 10:
@@ -199,22 +201,22 @@ class TestStringMethods(unittest.TestCase):
         for prime in [3, 5, 7, 11, 13, 17]:
             self.assertTrue(sieve[prime])
 
-    def test_isPandigital(self):
-        self.assertEqual(isPandigital([1, 2, 3, 4, 6, 5, 8, 7, 9]), True)
-        self.assertEqual(isPandigital([1, 2, 3, 4, 6, 5, 8, 9]), False)
-        self.assertEqual(isPandigital([1, 2, 3, 4, 6, 5, 8, 8, 9]), False)
-        self.assertEqual(isPandigital([1, 3, 2], 3), True)
+    def test_is_pandigital(self):
+        self.assertEqual(is_pandigital([1, 2, 3, 4, 6, 5, 8, 7, 9]), True)
+        self.assertEqual(is_pandigital([1, 2, 3, 4, 6, 5, 8, 9]), False)
+        self.assertEqual(is_pandigital([1, 2, 3, 4, 6, 5, 8, 8, 9]), False)
+        self.assertEqual(is_pandigital([1, 3, 2], 3), True)
 
     def test_splitSlice(self):
-        self.assertEqual(digitSlice(12345, -2), 45)
-        self.assertEqual(digitSlice(12345, 2), 12)
+        self.assertEqual(digit_slice(12345, -2), 45)
+        self.assertEqual(digit_slice(12345, 2), 12)
 
-    def test_subselections(self):
-        subselects = subSelections([1, 2, 3])
+    def test_sub_selections(self):
+        subselects = sub_selections([1, 2, 3])
         for s in [[1], [2], [3], [1, 2], [1, 3], [2, 3]]:
             self.assertTrue(s in subselects)
 
-        subselects = subSelections([0, 1, 2, 4])
+        subselects = sub_selections([0, 1, 2, 4])
         for s in [[0, 1, 2], [0, 1, 4], [1, 2, 4]]:
             self.assertTrue(s in subselects)
 

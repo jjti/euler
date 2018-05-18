@@ -46,7 +46,7 @@ def addMutatedPrime(digits, prime):
     for n in range(10):
         commonLocs = [i for i, _ in enumerate(digits) if digits[i] == n]
         if len(commonLocs):
-            digLocs += [commonLocs] + utils.subSelections(commonLocs)
+            digLocs += [commonLocs] + utils.sub_selections(commonLocs)
     insertAtAllLocs(digLocs, digits, prime)
 
 
@@ -68,12 +68,3 @@ def findMutatedPrimeFamily(targetN):
 
 
 print(findMutatedPrimeFamily(8))
-print(P_MUTATED_MAP["*2*3*3"])
-
-# startCount = endCount = 0
-# for p in P_MUTATED_MAP:
-#     if p.endswith("*"):
-#         endCount += 1
-#     if p.startswith("*"):
-#         startCount += 1
-# print(startCount, endCount)

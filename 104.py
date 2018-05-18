@@ -16,8 +16,8 @@ pandigitals = set([utils.join(n) for n in utils.permute(range(1, 10))])
 
 def firstAndLastTenPandigital(n):
     """return whether the first and last ten digits are pandigital"""
-    if utils.digitSlice(n, -9) in pandigitals:
-        if utils.digitSlice(n, 9) in pandigitals:
+    if utils.digit_slice(n, -9) in pandigitals:
+        if utils.digit_slice(n, 9) in pandigitals:
             return True
     return False
 

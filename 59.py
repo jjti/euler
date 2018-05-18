@@ -30,12 +30,10 @@ def keyGen():
     """the possible keys are aaa thru zzz
     ascii for lowercase letters is 97 to 123
     """
-    keys = []
     for a in range(97, 123):
         for b in range(97, 123):
             for c in range(97, 123):
-                keys.append([a, b, c])
-    return keys
+                yield [a, b, c]
 
 
 with open("59.input.txt") as encryption:

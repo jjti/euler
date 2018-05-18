@@ -49,7 +49,7 @@ while primePerc >= 0.10:
 
     for x in [bottomRightCorner - i * sideLength for i in range(1, 4)]:
         # check whether they're prime or not using the sieve
-        if utils.prime_check(x):
+        if utils.is_prime(x):
             primeCount += 1
 
     # find new ratio, will end if < 10%
