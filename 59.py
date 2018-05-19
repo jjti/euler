@@ -22,7 +22,7 @@ PUNC = set(string.punctuation)  # punction characters
 
 ENGLISH_WORDS = set()
 with open("59.english.words.txt") as wordsFile:
-    for word in wordsFile.readlines():
+    for word in wordsFile:
         ENGLISH_WORDS.add(word.strip())
 
 
@@ -57,4 +57,5 @@ with open("59.input.txt") as encryption:
             maxCount, bestResult = wordCount, decryptedWords
             bestByteScore = sum(decryptedChars)
 
+    # output: 107359 in 12.76 seconds
     print(maxCount, bestByteScore, bestResult)
