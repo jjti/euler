@@ -13,7 +13,7 @@ def path_sum_two_ways(test_matrix=None):
         # import the downloaded matrix
         matrix = []
         with open("81.input.txt") as matrix_file:
-            for line in matrix_file.readLines():
+            for line in matrix_file:
                 matrix.append([int(num) for num in line.split(",")])
 
     # initialize distances at None
@@ -43,3 +43,4 @@ def path_sum_two_ways(test_matrix=None):
 assert path_sum_two_ways([[131, 673, 234, 103, 18], [201, 96, 342, 965, 150],
                           [630, 803, 746, 422, 111], [537, 699, 497, 121, 956],
                           [805, 732, 524, 37, 331]]) == 2427
+print(path_sum_two_ways())  # output: 427337 in 0.056 seconds
