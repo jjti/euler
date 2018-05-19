@@ -1,4 +1,3 @@
-from utils import split, join
 """
 Find the unique positive integer whose square has the form 1_2_3_4_5_6_7_8_9_0,
 where each "_" is a single digit.
@@ -25,4 +24,5 @@ def incrementingSquare():
             return (n, digs)
 
 
-incrementingSquare()  # output: (1389019170, "1929374254627488900") in 27 secs
+# output: (1389019170, "1929374254627488900") in 18 secs
+print(incrementingSquare())
