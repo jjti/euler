@@ -77,11 +77,11 @@ def choose(n, r):
     return math.factorial(n) / dem
 
 
-def prime_sieve(limit, asList=False):
+def prime_sieve(limit, as_list=False):
     """Generate a prime number hash up the the limit, l
     1 is not a prime
 
-    asList returns just the list of primes beneath that limit
+    as_list returns just the list of primes beneath that limit
 
     based on the sieve of atkin and an example script at:
     https://www.geeksforgeeks.org/sieve-of-atkin/
@@ -123,7 +123,7 @@ def prime_sieve(limit, asList=False):
         r_squared = r * r
 
     # Part III: Append everything into a list
-    if asList:
+    if as_list:
         return [x for x, p in enumerate(sieve_list) if p]
     return dict.fromkeys([x for x, p in enumerate(sieve_list) if p], True)
 
@@ -175,6 +175,45 @@ def is_pandigital(digits, size=9):
     if size < 10:
         return len(set(range(1, size + 1)).difference(set(digits))) == 0
     return len(set(range(0, size)).difference(set(digits))) == 0
+
+
+def factorize(num, prime_list, prime_set):
+    """
+        return a list of prime factors for the number
+        a prime_list is needed (from a prior sieve or something)
+    """
+    factors = set()
+
+    for prime in prime_list:
+        if num in prime_set:
+            factors.add(num)
+            return factors
+        elif num == 0 or prime > num:
+            return factors
+        elif num % prime == 0:
+            factors.add(prime)
+            num /= prime
+
+
+def gen_factor_map(limit=1000000):
+    """
+        like the sieve or erathanous, but am making a list of factors at each index
+    """
+    factors = dict.fromkeys(range(2, limit + 1), None)
+    for n in range(2, limit / 2 + 1):
+        if factors[n] == None:
+            for m in range(n * 2, limit, n):
+                if factors[m] == None:
+                    factors[m] = [n]
+                else:
+                    factors[m].append(n)
+    return factors
+
+
+assert factorize(4998, prime_sieve(1000, True),
+                 set(prime_sieve(1000, True))) == set([2, 3, 7, 17])
+assert factorize(10, prime_sieve(1000, True),
+                 set(prime_sieve(1000, True))) == set([2, 5])
 
 
 class TestStringMethods(unittest.TestCase):
