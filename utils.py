@@ -33,16 +33,16 @@ def digit_slice(n, sliceCount):
     return n / (10**(numDigits - sliceCount))
 
 
-def join(n, asString=False):
+def join(n, as_string=False):
     """Join the array of digits in n into a single number
 
     n {[int]} the array of integers to turn into a single number
     asString {bool} whether to return as string. useful for keeping 0 at front of number
     Ex: join([3, 1, 5, 4]) = 3154
     """
-    if not asString:
+    if not as_string:
         return reduce(lambda x, y: x * 10 + y, n)
-    return reduce(lambda x, y: x + y, [str(x) for x in n])
+    return "".join([str(x) for x in n])
 
 
 def reverse(n):
