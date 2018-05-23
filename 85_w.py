@@ -23,7 +23,7 @@ assert rectangle_count(2, 2) == 9
 assert rectangle_count(3, 2) == 18
 
 
-def counting_rectangles(target=2000000, lower_bound=1, upper_bound=1000):
+def counting_rectangles(target=2000000, lower_bound=1, upper_bound=2000):
     """
         Notes:
             Another DP problem... harder than last two
@@ -38,7 +38,7 @@ def counting_rectangles(target=2000000, lower_bound=1, upper_bound=1000):
     curr_closest = (0, 0, 0)
     for n in range(lower_bound, upper_bound):
         for m in range(n, upper_bound + 1):
-            if n * m > 4000 and n * m < 7500:
+            if n * m > 4000 and n * m < 6500:
                 rect_count = rectangle_count(n, m)
                 if abs(rect_count - target) < abs(curr_closest[2] - target):
                     curr_closest = (n, m, rect_count)
