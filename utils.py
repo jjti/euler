@@ -177,24 +177,6 @@ def is_pandigital(digits, size=9):
     return len(set(range(0, size)).difference(set(digits))) == 0
 
 
-def factorize(num, prime_list, prime_set):
-    """
-        return a list of prime factors for the number
-        a prime_list is needed (from a prior sieve or something)
-    """
-    factors = set()
-
-    for prime in prime_list:
-        if num in prime_set:
-            factors.add(num)
-            return factors
-        elif num == 0 or prime > num:
-            return factors
-        elif num % prime == 0:
-            factors.add(prime)
-            num /= prime
-
-
 def gen_factor_map(limit=1000000):
     """
         like the sieve or erathanous, but am making a list of factors at each index
@@ -208,12 +190,6 @@ def gen_factor_map(limit=1000000):
                 else:
                     factors[m].append(n)
     return factors
-
-
-assert factorize(4998, prime_sieve(1000, True),
-                 set(prime_sieve(1000, True))) == set([2, 3, 7, 17])
-assert factorize(10, prime_sieve(1000, True),
-                 set(prime_sieve(1000, True))) == set([2, 5])
 
 
 class TestStringMethods(unittest.TestCase):
