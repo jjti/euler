@@ -12,17 +12,16 @@ Console.WriteLine(11 * Math.Log(2) < 7 * Math.Log(3))
 
 string[] lines = System.IO.File.ReadAllLines(@"./99.input.txt");
 double curr_max = 0;
-int max_index = 0;
-for (int i = 0; i < lines.Count(); i +=1){
+int max_line = 0;
+for (int i = 0; i < lines.Length; i +=1){
     string[] numbers_text = lines[i].Split(',');
-    double bas = (double) int.Parse(numbers_text[0]);
-    double exp = (double) int.Parse(numbers_text[1]);
-    double this_val = exp * Math.Log(bas);
+    int bas = int.Parse(numbers_text[0]);
+    int exp = int.Parse(numbers_text[1]);
+    double this_val = (double) exp * Math.Log(bas);
     if (this_val > curr_max) {
         curr_max = this_val;
-        max_index = i;
+        max_line = i + 1; // answer is line number, not index...
     }
 }
 
-Console.WriteLine(max_index + 1)
-
+Console.WriteLine(max_line)
