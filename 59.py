@@ -42,15 +42,17 @@ with open("59.input.txt") as encryption:
     maxCount, bestResult, bestByteScore = 0, "", 0
     encryptedChars = [int(k) for k in encryption.read().split(",")]
     for keys in keyGen():
+        # XOR with key
         decryptedChars = [
             char ^ keys[i % 3] for i, char in enumerate(encryptedChars)
-        ]  # XOR with key
+        ]
         decryptedText = [chr(c) for c in decryptedChars if chr(c) not in PUNC]
+        decryptedText = "".join(decryptedText)
 
         # join chars and separate into words
-        decryptedWords = "".join(decryptedText).split(" ")
-        wordCount = sum(1 if word.lower() in ENGLISH_WORDS else 0
-                        for word in decryptedWords)
+        decryptedWords = decryptedText.split(" ")
+        wordCount = sum(
+            1 for word in decryptedWords if word.lower() in ENGLISH_WORDS)
 
         # set a new best predicted decryption
         if wordCount > maxCount:
