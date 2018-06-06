@@ -16,22 +16,22 @@ def bouncy_and_increment(n):
             # this current digit is greater than last
             if direction == -1:
                 # it had been decending
-                return (True, 1)
+                return True
             direction = 1
         elif digs[i - 1] > d:
             # this current digit is less than the last
             if direction == 1:
                 # it had been ascending
-                return (True, 1)
+                return True
             direction = -1
 
-    return (False, 1)
+    return False
 
 
-assert bouncy_and_increment(10) == (False, 1)
-assert bouncy_and_increment(101) == (True, 1)
-assert bouncy_and_increment(10123) == (True, 1)
-assert bouncy_and_increment(11123) == (False, 1)
+assert bouncy_and_increment(10) == False
+assert bouncy_and_increment(101) == True
+assert bouncy_and_increment(10123) == True
+assert bouncy_and_increment(11123) == False
 
 
 def bouncy_numbers(target_ratio=0.99):
@@ -50,16 +50,15 @@ def bouncy_numbers(target_ratio=0.99):
     """
     number, ratio = 1, 0.0  # ratio of bouncy to non-bouncy numbers
     bouncy_numbers = 0.0
-    increment = 0  # need this here to subtract from the active number at end of loop
 
     while ratio < target_ratio:
-        bouncy, increment = bouncy_and_increment(number)
+        bouncy = bouncy_and_increment(number)
         if bouncy:
             bouncy_numbers += 1
         ratio = bouncy_numbers / number
-        number += increment
+        number += 1
 
-    return number - increment
+    return number - 1
 
 
 assert bouncy_numbers(0.9) == 21780

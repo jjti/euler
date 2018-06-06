@@ -1,6 +1,5 @@
 import utils
 from sets import Set
-
 """
 Pandigital products
 Problem 32 
@@ -14,11 +13,11 @@ HINT: Some products can be obtained in more than one way so be sure to only incl
 PRODUCTS = Set()
 PANS = utils.permute(range(1, 10))
 for p in PANS:
-    for c in range(1, 6): # multiplicand
-        for d in range(c+1, 7): # product
+    for c in range(1, 6):  # multiplicand
+        for d in range(c + 1, 7):  # product
             multiplicand = utils.join(p[0:c])
             multiplier = utils.join(p[c:d])
             product = utils.join(p[d:])
             if multiplicand * multiplier == product:
                 PRODUCTS.add(product)
-print reduce(lambda x,y: x + y, PRODUCTS)
+print reduce(lambda x, y: x + y, PRODUCTS)

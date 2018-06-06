@@ -125,7 +125,7 @@ def prime_sieve(limit, as_list=False):
     # Part III: Append everything into a list
     if as_list:
         return [x for x, p in enumerate(sieve_list) if p]
-    return dict.fromkeys([x for x, p in enumerate(sieve_list) if p], True)
+    return sieve_list
 
 
 def is_prime(n):
@@ -177,18 +177,14 @@ def is_pandigital(digits, size=9):
     return len(set(range(0, size)).difference(set(digits))) == 0
 
 
-def gen_factor_map(limit=1000000):
+def gen_factor_map(limit):
     """
         like the sieve or erathanous, but am making a list of factors at each index
     """
-    factors = dict.fromkeys(range(2, limit + 1), None)
-    for n in range(2, limit / 2 + 1):
-        if factors[n] == None:
-            for m in range(n * 2, limit, n):
-                if factors[m] == None:
-                    factors[m] = [n]
-                else:
-                    factors[m].append(n)
+    factors = {n: [1] for n in range(limit + 1)}
+    for n in range(2, limit / 2):
+        for m in range(n, limit, n):
+            factors[m].append(n)
     return factors
 
 
