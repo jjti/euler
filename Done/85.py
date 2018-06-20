@@ -1,8 +1,9 @@
 """
-By counting carefully it can be seen that a rectangular grid measuring 3 by 2 contains eighteen rectangles:
+By counting carefully it can be seen that a rectangular grid
+measuring 3 by 2 contains eighteen rectangles:
 
-
-Although there exists no rectangular grid that contains exactly two million rectangles, find the area of the grid with the nearest solution.
+Although there exists no rectangular grid that contains exactly two million rectangles,
+find the area of the grid with the nearest solution.
 """
 
 
@@ -16,7 +17,8 @@ def rectangle_count(x, y):
     # increment thru every possibly sized box and add up all the ways it could fit
     for i in range(1, x + 1):
         for j in range(1, y + 1):
-            contains_count += (x / i + x % i) * (y / j + y % j)
+            contains_count += (x - i + 1) * (y - j + 1)
+
     return contains_count
 
 
@@ -25,7 +27,7 @@ assert rectangle_count(2, 2) == 9
 assert rectangle_count(3, 2) == 18
 
 
-def counting_rectangles(target=2000000, lower_bound=1, upper_bound=700):
+def counting_rectangles(target=2000000, lower_bound=1, upper_bound=1500):
     """
         Notes:
             Another DP problem... harder than last two
@@ -40,7 +42,7 @@ def counting_rectangles(target=2000000, lower_bound=1, upper_bound=700):
     curr_closest = (0, 0, 0, 0)
     for n in range(lower_bound, upper_bound):
         for m in range(n, upper_bound + 1):
-            if m * n > 4000 and m * n < 6500:
+            if n * m > 2000 and n * m < 6000:
                 rect_count = rectangle_count(n, m)
                 if abs(rect_count - target) < abs(curr_closest[3] - target):
                     curr_closest = (n, m, n * m, rect_count)
