@@ -188,6 +188,18 @@ def gen_factor_map(limit):
     return factors
 
 
+def gen_prime_factor_map(limit):
+    """
+        like the sieve or erathanous, but am making a list of prime factors at each index
+    """
+    factors = {n: [] for n in range(limit + 1)}
+    PRIMES = prime_sieve(limit, as_list=True)
+    for n in PRIMES:
+        for m in range(n, limit, n):
+            factors[m].append(n)
+    return factors
+
+
 class TestStringMethods(unittest.TestCase):
     def test_split(self):
         self.assertEqual(split(109), [1, 0, 9])
