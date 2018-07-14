@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math"
 	"sync"
-	"time"
 )
 
 type ConTotient struct {
@@ -81,11 +80,10 @@ func phiSieveGen(limit int) []int {
 	}
 
 	wg.Wait()
-	time.Sleep(10 * time.Millisecond) // hack but needed
 
 	phis := []int{}
-	for _, p := range phiValues {
-		phis = append(phis, p.Value)
+	for i := range phiValues {
+		phis = append(phis, phiValues[i].Value)
 	}
 	return phis
 }
@@ -107,5 +105,5 @@ func main() {
 	assert(138, hexorchard(10))
 	assert(1177848, hexorchard(1000))
 	// 5 = 0.38, 6 = 0.6, 7 = 2.6, 8 = 29
-	fmt.Println(hexorchard(int(math.Pow10(5)))) // 11762187201804552 in 29 seconds
+	fmt.Println(hexorchard(int(math.Pow10(8)))) // 11762187201804552 in 29 seconds
 }
