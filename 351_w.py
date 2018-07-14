@@ -15,59 +15,60 @@ Find H(100 000 000).
 """
 
 
-def hex_orchard(order=5):
+def hex_orchard(o=5):
     t1 = time.time()
 
-    PRIME_FACTORS = utils.gen_prime_factor_map(order + 1)
-
-    CACHE = {}
+    PRIME_FACTORS = utils.gen_prime_factor_map(o + 1)
 
     def phi(n):
-        m = n
-        for p in PRIME_FACTORS[m]:
-            m -= m / p
-        CACHE[n] = m
-        return m
-
-    # print(time.time() - t1)
+        for p in PRIME_FACTORS[n]:
+            n -= n / p
+        return n
 
     t2 = time.time()
 
-    length = order
-    hidden = 0  # 1 hidden for all but one x = 0 position
-    cache = {}
-    for x in range(2, length):
+    print(time.time() - t1)
 
-        # number of times it fits fully within height available
-        y = (length - x / 2)
-        folds = y / x
-        hidden += (x - phi(x)) * folds
+    ans = sum([n - phi(n) for n in range(1, o + 1)]) * 6
 
-        # count up the remaining coordinates
-        left = y % x
-        left_set = set()
-        for p in PRIME_FACTORS[x]:
-            left_set.update(range(p, left + 1, p))
-        hidden += len(left_set)
+    print(time.time() - t2)
 
-        # fold_text = "folds created: " + str((x - phi(x)) * folds)
-        # rem_text = "remainder " + str(left) + " created: " + str(left_hidden)
-        # print('{0}, {1}  ->  {2}   {3}'.format(x, y, fold_text, rem_text))
+    return ans
 
-        # nums_hidden = set()
-        # for p in PRIME_FACTORS[x]:
-        #     nums_hidden.update(range(p, length - x, p))
-        # hidden += len(nums_hidden)
+    # hidden = [[False] * (o + 1) for _ in range(o + 1)]
+    # for x in range(1, o + 1):
+    #     for y in range(0, o - x + 1):
+    #         new_x = x + x
+    #         new_y = y + y
+    #         while new_x <= o and new_y <= o:
+    #             hidden[new_x][new_y] = True
+    #             new_x += x
+    #             new_y += y
 
-    # print(time.time() - t2)
+    # # number of times it fits fully within height available
+    # y = length - x
+    # folds = y / x
+    # hidden += (x - phi(x)) * folds
 
-    print hidden * 6
+    # # count up the remaining coordinates
+    # left = y % x
+    # left_set = set()
+    # for p in PRIME_FACTORS[x]:
+    #     left_set.update(range(p, left + 1, p))
+    # hidden += len(left_set)
 
-    return 6 * (2 * (order - 1) + 2 * hidden)
+    # print o
+    # for x in range(o + 1):
+    #     for y in range(o + 1):
+    #         if hidden[x][y] and x + y == o:
+    #             print(x, y)
+
+    # return len([c for row in hidden for c in row if not c])
 
 
-# print hex_orchard(5)
-# hex_orchard(10)
-# hex_orchard(10**4) # 0.48
-# hex_orchard(10**5)  # 45.1
-hex_orchard(10)
+# for n in range(1, 15):
+#     hex_orchard(n)
+# assert hex_orchard(5) == 30  # 30
+# assert hex_orchard(10) == 138  # 138
+# assert hex_orchard(1000) == 1177848  # 1177848
+print hex_orchard(10**6 * 5)
