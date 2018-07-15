@@ -18,8 +18,8 @@ func (c *ConTotient) FactorDecrease(prime int) {
 	c.Value -= c.Value / prime
 }
 
-// assert the value is true or panic
-func assert(expected interface{}, actual interface{}) {
+// Assert the value is true or panic
+func Assert(expected interface{}, actual interface{}) {
 	if expected != actual {
 		panic(fmt.Sprintf("%v not equal to %v", expected, actual))
 	}
@@ -101,9 +101,9 @@ func hexorchard(order int) int {
 }
 
 func main() {
-	assert(30, hexorchard(5))
-	assert(138, hexorchard(10))
-	assert(1177848, hexorchard(1000))
+	Assert(30, hexorchard(5))
+	Assert(138, hexorchard(10))
+	Assert(1177848, hexorchard(1000))
 	// 5 = 0.38, 6 = 0.6, 7 = 2.6, 8 = 29
 	fmt.Println(hexorchard(int(math.Pow10(8)))) // 11762187201804552 in 29 seconds
 }
