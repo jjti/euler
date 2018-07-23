@@ -39,13 +39,13 @@ ABC|EFD
     Notes: need to make sure that, after each flip, the next number that is ordered is not last
 """
 
+CACHE = {}
 
-def mix_count(word):
+
+def mix_count(word, ordered):
     """
         figure out how many times n has to be "flipped" to be ordered
     """
-    ordered = sorted(word)
-
     flips = 0
     i = 0
     while i < len(word):
@@ -55,26 +55,32 @@ def mix_count(word):
             if pos == len(word) - 1:
                 word = word[:i] + list(reversed(word[i:]))
                 flips += 1
+                for k in currFlips:
+                    currFlips[k] += 1
             else:
                 word = word[:pos] + list(reversed(word[pos:]))
                 word = word[:i] + list(reversed(word[i:]))
                 flips += 2
+
         i += 1
+
     return flips
 
 
-assert mix_count(["D", "A", "C", "B"]) == 5
-assert mix_count(["D", "B", "A", "C"]) == 5
+print mix_count(["D", "A", "C", "B"], ["A", "B", "C", "D"])
+assert mix_count(["D", "A", "C", "B"], ["A", "B", "C", "D"]) == 5
+assert mix_count(["D", "B", "A", "C"], ["A", "B", "C", "D"]) == 5
 
 
 def mixmax_count(limit=5):
     word = [chr(n) for n in range(65, 65 + limit)]
+    ordered = [chr(n) for n in range(65, 65 + limit)]
 
     max_count = 0
     valid_words = []
     words = utils.permute(word)
     for w in words:
-        count = mix_count(w)
+        count = mix_count(w, ordered)
         if count > max_count:
             max_count = count
             valid_words = [w]
@@ -83,25 +89,6 @@ def mixmax_count(limit=5):
     return sorted(["".join(word) for word in valid_words])
 
 
-# print mixmax_count(11)[2010] # outputs CAGBIHEFJDK in 22 minutes...
+# print mixmax_count(11)[2010]  # outputs CAGBIHEFJDK in 22 minutes...
 
-
-def flip_and_store(letters, flip_count, flip_count_map):
-    """
-    failed attempt at a faster solution
-    
-    flip the letters at each location, increment flip_count, and
-    for all the new combos that are a minimum flip_count for that combo,
-    keep flipping and update in the flip_count_map
-    """
-    key = "".join(letters)
-
-    if key not in flip_count_map or flip_count < flip_count_map[key]:
-        flip_count_map[key] = flip_count
-
-    if curr_index < 0:
-        return
-
-    for i in range(curr_index, len(letters)):
-        flip_and_store(letters[:i] + list(reversed(letters[i:])),
-                       curr_index - 1, flip_count + 1, flip_count_map)
+print mixmax_count(9)[10]  # outputs CAGBIHEFJDK in 22 minutes...
