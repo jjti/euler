@@ -1,13 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import math
-import resource
-
-from bitarray import bitarray
 
 import utils
-
-resource.setrlimit(resource.RLIMIT_DATA, (10000000 * 1024, 10000000 * 1024))
 
 
 """
@@ -17,7 +12,7 @@ How many squarefree numbers are there below 250?
 """
 
 # 11, 21
-def squarefree(limit=2 ** 50):
+def squarefree_approach_1(limit=2 ** 50):
     
     upper_bound = int(math.floor(math.sqrt(limit)))
 
@@ -31,5 +26,24 @@ def squarefree(limit=2 ** 50):
 
     return len(squares)
 
+def squarefree_approach_2(limit = 2 ** 50):
+    upper_bound = int(math.floor(math.sqrt(limit)))
 
-print squarefree()
+    # start at the top prime
+    primes = utils.prime_sieve(upper_bound, as_list=True)
+    primes = sorted(primes, reverse=True)
+    primes_sqrd = [p ** 2 for p in primes]
+
+    # divide the limit by the number of times this fits within in it
+    print len(primes_sqrd)
+    prev_counts = {}
+    non_squares = 0
+    for (i, p) in enumerate(primes_sqrd):
+        count = int(math.floor(limit / p)) + 1
+        count -= sum([int(math.floor(prev_p / p)) for prev_p in primes_sqrd[:i]])
+        non_squares += count
+        prev_counts[p] = count
+    return limit - non_squares
+
+
+print squarefree_approach_2()
